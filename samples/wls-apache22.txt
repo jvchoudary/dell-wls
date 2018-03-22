@@ -1,0 +1,24 @@
+Apache 2.2 Plugin configuration with WebLogic Server 12c(12.2.1.3.0)
+1. extract the given zip into /opt/dell/production/weblogic-plugins folder
+2. edit the <APACHE_HOME>/conf/httpd.conf and add the follwing:
+ 
+   LoadModule weblogic_module /opt/dell/production/weblogic-plugins/lib/mod_wl.so
+
+   <IfModule mod_weblogic.c>
+     WebLogicHost wls-host
+     WebLogicPort wls-port
+   </IfModule>
+
+   <Location /mywebapp>
+     SetHandler weblogic-handler
+   </Location>
+ 
+
+3. Ensure that the ${PLUGIN_HOME}/lib is included in the LD_LIBRARY_PATH:
+   $ export LD_LIBRARY_PATH=/dell/production/weblogic-plugins/lib
+
+4. Start Apache HTTP Server:
+   ${APACHE_HOME}/bin/apachectl start
+
+5. Send a request to http://apache-host:apache-port/mywebapp/my.jsp
+   from the browser. Validate the response.
